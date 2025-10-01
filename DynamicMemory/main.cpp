@@ -336,10 +336,8 @@ template<typename T>void push_col_back(T** arr, const int rows, int& cols)
 {
 	for (int i = 0; i < rows; i++)
 	{
-		T* buffer = new T[cols + 1] {};
-		for (int j = 0; j < cols; j++) buffer[j] = arr[i][j];
-		delete[] arr[i];
-		arr[i] = buffer;
+		arr[i] = push_back(arr[i], cols, T());
+		cols--;
 	}
 	cols++;
 }
