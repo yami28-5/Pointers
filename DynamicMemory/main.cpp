@@ -153,7 +153,6 @@ template<typename T>T** Allocate(const int rows, const int cols)
 	}
 	return arr;
 }
-
 template<typename T>void Clear(T** arr, const int rows)
 {
 	for (int i = 0; i < rows; i++)
@@ -162,7 +161,6 @@ template<typename T>void Clear(T** arr, const int rows)
 	}
 	delete[] arr;
 }
-
 void FillRand(int arr[], const int n, int minRand, int maxRand)
 {
 	for (int i = 0; i < n; i++)
@@ -294,7 +292,6 @@ template<typename T>T* erase(T arr[], int& n, int index)
 	delete[] arr;
 	return buffer;
 }
-
 template<typename T>T** push_row_back(T** arr, int& rows, const int cols)
 {
 	return push_back(arr, rows, new T[cols]{});
@@ -307,7 +304,6 @@ template<typename T>T** insert_row(T** arr, int& rows, const int cols, int index
 {
 	return insert(arr, rows, new T[cols]{}, index);
 }
-
 template<typename T>T** pop_row_back(T** arr, int& rows, int cols)
 {
 	delete[] arr[rows - 1];
@@ -320,17 +316,7 @@ template<typename T>T** pop_row_front(T** arr, int& rows, const int cols)
 }
 template<typename T>T** erase_row(T** arr, int& rows, const int cols, int index)
 {
-	if (index >= rows) return arr;
-
-	T** buffer = new T* [rows - 1];
-	for (int i = 0; i < rows - 1; i++)
-	{
-		buffer[i] = arr[i < index ? i : i + 1];
-	}
-	delete[] arr[index];
-	delete[] arr;
-	rows--;
-	return buffer;
+	return erase(arr, rows, index);
 }
 template<typename T>void push_col_back(T** arr, const int rows, int& cols)
 {
@@ -345,27 +331,18 @@ template<typename T>void push_col_front(T** arr, const int rows, int& cols)
 {
 	for (int i = 0; i < rows; i++)
 	{
-		T* buffer = new T[cols + 1] {};
-		for (int j = 0; j < cols; j++) buffer[j + 1] = arr[i][j];
-		delete[] arr[i];
-		arr[i] = buffer;
-	}
+		arr[i] = push_front(arr[i], cols, T());
+		cols--;
+    }
 	cols++;
 }
 template<typename T>void insert_col(T** arr, const int rows, int& cols, int index)
 {
-	if (index > cols) return;
-
 	for (int i = 0; i < rows; i++)
 	{
-		T* buffer = new T[cols + 1] {};
-		for (int j = 0; j < cols; j++)
-		{
-			buffer[j < index ? j : j + 1] = arr[i][j];
-		}
-		delete[] arr[i];
-		arr[i] = buffer;
-	}
+		arr[i] = insert(arr[i], cols, T(), index);
+		cols--;
+    }
 	cols++;
 }
 template<typename T>void pop_col_back(T** arr, const int rows, int& cols)
